@@ -1,6 +1,4 @@
-import json
-
-from flask import Blueprint, render_template, g, request, redirect, url_for, Response
+from flask import Blueprint, render_template, g, request, Response
 from werkzeug.exceptions import abort
 
 from routes.auth import login_required
