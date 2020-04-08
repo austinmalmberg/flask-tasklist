@@ -15,7 +15,9 @@
 {% block content %}
 
     {% if g.user %}
-        {% include 'snippets/todolist.html' %}
+        <div class="todo-list--container">
+            {% include 'snippets/todolist.html' %}
+        </div>
     {% endif %}
 
 {% endblock %}

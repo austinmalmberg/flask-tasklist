@@ -5,5 +5,31 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'snippets/login_form.html' %}
+    <div class="container">
+        <p class="whisper">Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register</a></p>
+        <form method="post" action="/login">
+            <fieldset>
+                <label for="email">Email</label>
+                <input name="email" id="email" required>
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </fieldset>
+            <fieldset>
+                <input type="submit" value="Login">
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="todo-list--container">
+        <div class="todo-list--card">
+            <h2 class="todo-list--title">Things to do</h2>
+            <ul class="todo-list">
+                <li class="checked">Register</li>
+                <li>Login</li>
+                <li>Improve your productivity</li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
