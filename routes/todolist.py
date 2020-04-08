@@ -10,14 +10,15 @@ bp = Blueprint('items', __name__)
 
 
 @bp.route('/')
+@login_required
 def index():
 
     items = []
 
     if g.user:
-        items = Item.query.filter_by(user_id=g.user.id).all()
+        items = Item.query.filter_by(user_id=g.user.id).all() or []
 
-    return render_template('index.html', items=items or [])
+    return render_template('index.html', items=items)
 
 
 @bp.route('/additem', methods=('POST',))
