@@ -16,8 +16,6 @@ def index():
     if g.user:
         items = Item.query.filter_by(user_id=g.user.id).all() or []
 
-    print(items)
-
     return render_template('index.html', items=items)
 
 
