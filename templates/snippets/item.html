@@ -1,5 +1,0 @@
-<form method="post" action="/{{ item.id }}/remove">
-    <input id="completed-{{ item.id }}" name="completed-{{ item.id }}" type="checkbox" oninput="handleOnInput()" data-original-value="{{ 'checked' if item.completed else 'unchecked' }}" {{ "checked" if item.completed }}>
-    <input id="description-{{ item.id }}" name="description-{{ item.id }}" oninput="handleOnInput()" value="{{ item.description }}" data-original-value="{{ item.description }}">
-    <input id="submit-{{ item.id }}" class="btn-remove" type="submit" value="Remove">
-</form>
