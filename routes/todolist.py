@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, request, Response
+from flask import Blueprint, render_template, g, request, redirect, url_for
 from werkzeug.exceptions import abort
 
 from routes.auth import login_required
@@ -16,30 +16,31 @@ def index():
     if g.user:
         items = Item.query.filter_by(user_id=g.user.id).all() or []
 
+    print(items)
+
     return render_template('index.html', items=items)
 
 
 @bp.route('/additem', methods=('POST',))
 @login_required
-def create():
-    if request.method == 'POST':
+def add_item():
 
-        json_data = request.get_json()
+    desc = request.form.get('description')
 
-        desc = json_data.get('description')
+    if not desc:
+        abort(400)
 
-        if not desc:
-            abort(400)
+    completed = True if request.form.get('completed') else False
 
-        item = Item(
-            user_id=g.user.id,
-            description=desc,
-            completed=False
-        )
-        db.session.add(item)
-        db.session.commit()
+    item = Item(
+        user_id=g.user.id,
+        description=desc,
+        completed=completed
+    )
+    db.session.add(item)
+    db.session.commit()
 
-        return render_template('snippets/item.html', item=item)
+    return redirect(url_for('index'))
 
 
 @bp.route('/<int:id>/update', methods=('POST',))
@@ -51,26 +52,22 @@ def update(id):
     if item is None:
         abort(404)
 
-    json_data = request.get_json()
-
-    desc = json_data.get('description')
-    completed = json_data.get('completed')
-
     if g.user.id != item.user_id:
         abort(403)
 
-    if not desc and not completed:
-        abort(400)
+    desc = request.form.get(f'description-{id}')
 
     if desc:
         item.description = desc
 
-    if completed and isinstance(completed, bool):
+    completed = True if request.form.get(f'completed-{id}') else False
+
+    if completed is not item.completed:
         item.completed = completed
 
     db.session.commit()
 
-    return render_template('snippets/item.html', item=item)
+    return redirect(url_for('index'))
 
 
 @bp.route('/<int:id>/remove', methods=('POST',))
@@ -89,9 +86,4 @@ def remove(id):
     db.session.delete(item)
     db.session.commit()
 
-    return Response(status=200)
-
-
-@bp.route('/emptyitem', methods=('GET',))
-def empty_item():
-    return render_template('snippets/item.html')
+    return redirect(url_for('index'))

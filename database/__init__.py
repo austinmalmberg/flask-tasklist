@@ -27,4 +27,4 @@ class Item(db.Model):
     completed = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return f'<Item {self.description}>'
+        return f'<Item {self.description} ({self.completed})>'

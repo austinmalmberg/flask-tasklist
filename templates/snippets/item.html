@@ -1,7 +1,5 @@
-{% if item %}
-    <input class="item" id="item-{{ item.id }}" oninput="handleUpdateButton(this.nextElementSibling, {{ item.id }})" value="{{ item.description }}">
-    <input class="btn-remove" type="button" onclick="handleRemoveItem(this.previousElementSibling, {{ item.id }})" value="Delete">
-{% else %}
-    <input class="item" placeholder="New Item">
-    <input class="btn-add" type="button" onclick="handleAddItem(this.previousElementSibling)" value="Add New">
-{% endif %}
+<form method="post" action="/{{ item.id }}/remove">
+    <input id="completed-{{ item.id }}" name="completed-{{ item.id }}" type="checkbox" oninput="handleOnInput()" data-original-value="{{ 'checked' if item.completed else 'unchecked' }}" {{ "checked" if item.completed }}>
+    <input id="description-{{ item.id }}" name="description-{{ item.id }}" oninput="handleOnInput()" value="{{ item.description }}" data-original-value="{{ item.description }}">
+    <input id="submit-{{ item.id }}" class="btn-remove" type="submit" value="Remove">
+</form>
