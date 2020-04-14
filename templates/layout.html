@@ -4,7 +4,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 <nav>
-    <h2>Improve your productivity</h2>
+    <h2 class="slogan">Improve your productivity</h2>
     <ul class="nav-list">
     {% if g.user %}
         <li><a href="{{ url_for('auth.logout') }}">Logout</a>
@@ -19,9 +19,6 @@
     <header>
         {% block header %}{% endblock %}
     </header>
-    {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
     {% block content %}{% endblock %}
 </main>
 

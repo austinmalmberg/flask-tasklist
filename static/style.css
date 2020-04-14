@@ -15,6 +15,10 @@ body {
     padding: 1em;
 }
 
+input[type="text"], input[type="password"] {
+    padding: 0.5em;
+}
+
 .whisper {
     font-size: 0.8em;
     font-style: oblique;
@@ -30,7 +34,7 @@ nav {
     align-items: center;
 }
 
-nav h1 {
+nav .slogan {
     margin: 0.25em 0;
     font-style: oblique;
 }
@@ -74,7 +78,7 @@ nav a {
     background-color: #eee;
 }
 
-.todo-list {
+.todo--list {
     padding: 0;
 }
 
@@ -82,38 +86,20 @@ nav a {
     margin: 0.5em 0;
 }
 
-.todo-list li {
+.todo--list li {
     position: relative;
     list-style-type: none;
 
     margin: 0.5em 0;
 
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 2.3em;
-    padding-right: 1em;
+    padding: 0.3em;
 
     border: 1px solid #eee;
-}
-
-.todo-list li::before {
-    content: '';
-    position: absolute;
-    margin-left: -1.6em;
-    margin-top: 0.25em;
-    width: 0.8em;
-    height: 0.8em;
-
-    border: 1px solid black;
 }
 
 .checked {
     color: #999;
     text-decoration: line-through;
-}
-
-.checked::before {
-    background-color: #999;
 }
 
 
@@ -125,4 +111,9 @@ fieldset {
 
     padding: 0.5em 0;
     border: none;
+}
+
+.todo--title {
+    font-weight: bold;
+    font-size: 1em;
 }

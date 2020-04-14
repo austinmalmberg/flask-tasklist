@@ -8,27 +8,27 @@
 
 {% if g.user %}
 <div class="todo--container">
-	<div class="todo--card">
-		<h2 class="todo--title">Things to do</h2>
-		<ul id="todo-list" class="todo-list">
-			{% for item in items %}
-			<li>
-				<form method="post" action="/{{ item.id }}/remove">
-					<input id="completed-{{ item.id }}" name="completed-{{ item.id }}" type="checkbox" oninput="handleOnInput()" data-original-value="{{ 'checked' if item.completed else 'unchecked' }}" {{ "checked" if item.completed }}>
-					<input id="description-{{ item.id }}" name="description-{{ item.id }}" oninput="handleOnInput()" value="{{ item.description }}" data-original-value="{{ item.description }}">
-					<input id="submit-{{ item.id }}" class="btn-remove" type="submit" value="Remove">
+
+		{% for todolist in todolists %}
+			<div class="todo--card">
+				<form method="post" action="/{{ todolist.id }}/delete">
+					<input type="text" id="todo-{{ todolist.id }}--title" name="todo-{{ todolist.id }}--title" class="todo--title" oninput="handleListOnInput();dynamicWidth();" data-original-value="{{ todolist.name }}" value="{{ todolist.name }}">
+					<input type="submit" value="Delete">
 				</form>
-			</li>
-			{% endfor %}
-			<li>
-				<form method="post" action="/additem" onsubmit="preventDefault()">
-					<input id="completed" name="completed" type="checkbox">
-					<input id="description" name="description" placeholder="New Item">
-					<input class="btn-add" type="submit" value="Add New">
-				</form>
-			</li>
-		</ul>
-	</div>
+				<ul id="todo-{{ todolist.id }}" class="todo--list">
+					{% include 'listitems.html' %}
+				</ul>
+				{% for notification in get_flashed_messages(category_filter=["list-" ~ todolist.id]) %}
+					<p>{{ notification }}</p>
+				{% endfor %}
+			</div>
+		{% endfor %}
+
+		<div class="todo--card">
+			<form method="post" action="/create">
+				<input type="submit" value="+">
+			</form>
+		</div>
 </div>
 {% endif %}
 

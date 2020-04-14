@@ -10,7 +10,7 @@
         <form method="post" action="/login">
             <fieldset>
                 <label for="email">Email</label>
-                <input name="email" id="email" required>
+                <input type="text" name="email" id="email" required>
             </fieldset>
             <fieldset>
                 <label for="password">Password</label>
@@ -20,6 +20,9 @@
                 <input type="submit" value="Login">
             </fieldset>
         </form>
+        {% for message in get_flashed_messages(category_filter=["auth"]) %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
     </div>
 
     <div class="todo--container">
