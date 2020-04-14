@@ -10,6 +10,8 @@ def init_app(app):
 
 
 class User(db.Model):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(60), unique=True, nullable=False)
     pw_hash = db.Column(db.String(120), nullable=False)
@@ -21,6 +23,8 @@ class User(db.Model):
 
 
 class TodoList(db.Model):
+    __tablename__ = 'todolist'
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(60), default='New List')
@@ -32,8 +36,10 @@ class TodoList(db.Model):
 
 
 class Item(db.Model):
+    __tablename__ = 'item'
+
     id = db.Column(db.Integer, primary_key=True)
-    list_id = db.Column(db.Integer, db.ForeignKey('todo_list.id'))
+    list_id = db.Column(db.Integer, db.ForeignKey('todolist.id'))
     description = db.Column(db.String(80), nullable=False)
     completed = db.Column(db.Boolean, default=False)
 
