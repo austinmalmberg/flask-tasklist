@@ -54,7 +54,7 @@ nav a {
 
 /*              TODO LIST               */
 
-.todo-list--container {
+.todo--container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -63,7 +63,7 @@ nav a {
     padding: 1em;
 }
 
-.todo-list--card {
+.todo--card {
     display: inline-block;
 
     min-width: 25%;
@@ -78,7 +78,7 @@ nav a {
     padding: 0;
 }
 
-.todo-list--title {
+.todo--title {
     margin: 0.5em 0;
 }
 
