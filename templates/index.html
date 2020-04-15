@@ -15,9 +15,9 @@
 					<input type="text" id="todo-{{ todolist.id }}--title" name="todo-{{ todolist.id }}--title" class="todo--title" oninput="handleListOnInput();dynamicWidth();" data-original-value="{{ todolist.name }}" value="{{ todolist.name }}">
 					<input type="submit" value="Delete">
 				</form>
-				<ul id="todo-{{ todolist.id }}" class="todo--list">
-					{% include 'listitems.html' %}
-				</ul>
+
+				{% include 'listitems.html' ignore missing %}
+
 				{% for notification in get_flashed_messages(category_filter=["list-" ~ todolist.id]) %}
 					<p>{{ notification }}</p>
 				{% endfor %}
