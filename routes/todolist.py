@@ -1,10 +1,47 @@
+import functools
+
 from flask import Blueprint, render_template, g, request, redirect, url_for, flash
 from werkzeug.exceptions import abort
 
-from routes.auth import login_required
 from database import db, TodoList, Item
+from routes.auth import login_required
 
 bp = Blueprint('items', __name__)
+
+max_input_length = 26
+
+
+def authorize_list_action(view):
+    """
+    A view decorator that
+        1) verifies the todolist exists, and
+        2) verifies the user that's currently logged in has authorization to change the list
+
+    In cases where one of these are not correct, the decorator will (respectively)
+        1) abort with a 404 Not Found status, or
+        2) abort with a 403 Forbidden status
+
+    If the todolist is owned by the logged in user, the todolist kwarg is passed onto the view. This prevents having to
+    query the database again if it's used in the view method.
+
+    This decorator will throw an error if list_id is not provided as a kwarg
+
+    :param view: the view method. An error is thrown if list_id is omitted from the kwargs
+    :return: the view with the todolist passed as a kwarg
+    """
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        todolist = TodoList.query.filter_by(id=kwargs['list_id']).first()
+
+        if todolist is None:
+            abort(404)
+        elif g.user.id != todolist.user_id:
+            abort(403)
+
+        return view(**kwargs, todolist=todolist)
+
+    return wrapped_view
 
 
 @bp.route('/')
@@ -15,7 +52,7 @@ def index():
     if g.user:
         todolists = TodoList.query.filter_by(user_id=g.user.id).all() or []
 
-    return render_template('index.html', todolists=todolists)
+    return render_template('index.html', max_length=max_input_length, todolists=todolists)
 
 
 @bp.route('/create', methods=('POST',))
@@ -33,22 +70,15 @@ def create():
 
 @bp.route('/<int:list_id>/update', methods=('POST',))
 @login_required
-def update(list_id):
+@authorize_list_action
+def update(list_id, todolist):
     new_name = request.form.get(f'todo-{list_id}--title')
 
     if not new_name:
         flash('A list title is required', f'list-{list_id}')
 
     else:
-        todolist = TodoList.query.filter_by(id=list_id).first()
-
-        if todolist is None:
-            abort(404)
-
-        if g.user.id != todolist.user_id:
-            abort(403)
-
-        todolist.name = new_name
+        todolist.name = new_name[:max_input_length]
 
         db.session.commit()
 
@@ -57,17 +87,8 @@ def update(list_id):
 
 @bp.route('/<int:list_id>/delete', methods=('POST',))
 @login_required
-def delete(list_id):
-    todolist = TodoList.query.filter_by(id=list_id).first()
-
-    # make sure the list exists
-    if todolist is None:
-        abort(404)
-
-    # make sure it belongs to the logged in user
-    if g.user.id != todolist.user_id:
-        abort(403)
-
+@authorize_list_action
+def delete(list_id, todolist):
     list_items = Item.query.filter_by(list_id=list_id).all()
 
     for item in list_items:
@@ -81,20 +102,19 @@ def delete(list_id):
 
 @bp.route('/<int:list_id>/additem', methods=('POST',))
 @login_required
-def add_item(list_id):
+@authorize_list_action
+def add_item(list_id, todolist):
     desc = request.form.get('description')
 
     if not desc:
-
         flash('A description is required', f'list-{list_id}')
 
     else:
-
         completed = True if request.form.get('completed') else False
 
         item = Item(
-            list_id=list_id,
-            description=desc,
+            list_id=todolist.id,
+            description=desc[:max_input_length],
             completed=completed
         )
         db.session.add(item)
@@ -105,17 +125,8 @@ def add_item(list_id):
 
 @bp.route('/<int:list_id>/<int:item_id>/update', methods=('POST',))
 @login_required
-def update_item(list_id, item_id):
-    todolist = TodoList.query.filter_by(id=list_id).first()
-
-    # make sure the item exists
-    if todolist is None:
-        abort(404)
-
-    # make sure the todolist belongs to the logged in user
-    if g.user.id != todolist.user_id:
-        abort(403)
-
+@authorize_list_action
+def update_item(list_id, item_id, todolist):
     item = Item.query.filter_by(id=item_id).first()
 
     # make sure the item exists
@@ -124,31 +135,28 @@ def update_item(list_id, item_id):
 
     desc = request.form.get(f'description-{item_id}')
 
-    if desc:
-        item.description = desc
+    if not desc:
+        flash('A description is required', f'list-{list_id}')
 
-    completed = True if request.form.get(f'completed-{item_id}') else False
+    else:
 
-    # update completed only if the state changed (probably not needed)
-    if completed is not item.completed:
-        item.completed = completed
+        item.description = desc[:max_input_length]
 
-    db.session.commit()
+        completed = True if request.form.get(f'completed-{item_id}') else False
+
+        # update completed only if the state changed (probably not needed)
+        if completed is not item.completed:
+            item.completed = completed
+
+        db.session.commit()
 
     return redirect(url_for('index'))
 
 
 @bp.route('/<int:list_id>/<int:item_id>/remove', methods=('POST',))
 @login_required
-def remove(list_id, item_id):
-    todolist = TodoList.query.filter_by(id=list_id).first()
-
-    if not todolist:
-        abort(404)
-
-    if g.user.id != todolist.user_id:
-        abort(403)
-
+@authorize_list_action
+def remove(list_id, item_id, todolist):
     item = Item.query.filter_by(id=item_id).first()
 
     if not item:
