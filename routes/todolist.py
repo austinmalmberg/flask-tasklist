@@ -72,7 +72,7 @@ def create():
 @login_required
 @authorize_list_action
 def update(list_id, todolist):
-    new_name = request.form.get(f'todo--title')
+    new_name = request.form.get(f'todo--name')
 
     if not new_name:
         flash('A list title is required', f'todo-{todolist.id}')
