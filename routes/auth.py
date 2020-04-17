@@ -3,9 +3,21 @@ import functools
 from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from database import db, User
+from database import db, User, TodoList, Item
 
 bp = Blueprint('auth', __name__)
+
+register_todolist = TodoList(name='Things to do', items=[
+    Item(description='Register', completed=False),
+    Item(description='Login', completed=False),
+    Item(description='Organize your workflow', completed=False)
+])
+
+login_todolist = TodoList(name='Things to do', items=[
+    Item(description='Register', completed=True),
+    Item(description='Login', completed=False),
+    Item(description='Organize your workflow', completed=False)
+])
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -35,7 +47,7 @@ def register():
 
         flash(error, 'auth')
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', todolist=register_todolist)
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -61,7 +73,7 @@ def login():
 
         flash(error, 'auth')
 
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', todolist=login_todolist)
 
 
 @bp.before_app_request
