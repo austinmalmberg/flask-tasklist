@@ -19,6 +19,13 @@ input[type="text"], input[type="password"] {
     padding: 0.5em;
 }
 
+.flash {
+    font-size: 0.8rem;
+    font-style: oblique;
+
+    color: red;
+}
+
 .whisper {
     font-size: 0.8em;
     font-style: oblique;
