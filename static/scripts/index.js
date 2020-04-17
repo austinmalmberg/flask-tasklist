@@ -1,18 +1,3 @@
-// set input box widths
-const inputs = document.getElementsByTagName('input[type="text"]');
-
-for (let input of inputs) {
-    dynamicWidth(input);
-}
-
-
-function dynamicWidth(target) {
-    const element = target || event.target;
-    element.style.width = 3 + (element.value.length * 1.2) + 'ch';
-    console.log(element, element.style.width)
-}
-
-
 function handleListOnInput() {
     handleOnInput(setListUpdate, setListDelete);
 }
