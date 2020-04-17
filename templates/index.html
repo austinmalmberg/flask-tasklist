@@ -14,8 +14,7 @@
         <form method="post" action="/{{ todolist.id }}/delete">
             <input
                     type="text"
-                    id="todo-{{ todolist.id }}--title"
-                    name="todo-{{ todolist.id }}--title"
+                    name="todo--title"
                     class="todo--title" oninput="handleListOnInput()"
                     data-original-value="{{ todolist.name }}"
                     value="{{ todolist.name }}"
@@ -26,7 +25,7 @@
 
         {% include 'list_items.html' ignore missing %}
 
-        {% for notification in get_flashed_messages(category_filter=["list-" ~ todolist.id]) %}
+        {% for notification in get_flashed_messages(category_filter=["todo-" ~ todolist.id]) %}
         <p class="flash">{{ notification }}</p>
         {% endfor %}
 

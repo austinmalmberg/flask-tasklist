@@ -72,10 +72,10 @@ def create():
 @login_required
 @authorize_list_action
 def update(list_id, todolist):
-    new_name = request.form.get(f'todo-{list_id}--title')
+    new_name = request.form.get(f'todo--title')
 
     if not new_name:
-        flash('A list title is required', f'list-{list_id}')
+        flash('A list title is required', f'todo-{todolist.id}')
 
     else:
         todolist.name = new_name[:max_input_length]
@@ -104,17 +104,17 @@ def delete(list_id, todolist):
 @login_required
 @authorize_list_action
 def add_item(list_id, todolist):
-    desc = request.form.get('description')
+    description = request.form.get('description')
 
-    if not desc:
-        flash('A description is required', f'list-{list_id}')
+    if not description:
+        flash('A description is required', f'todo-{list_id}')
 
     else:
         completed = True if request.form.get('completed') else False
 
         item = Item(
             list_id=todolist.id,
-            description=desc[:max_input_length],
+            description=description[:max_input_length],
             completed=completed
         )
         db.session.add(item)
@@ -133,16 +133,16 @@ def update_item(list_id, item_id, todolist):
     if item is None:
         abort(404)
 
-    desc = request.form.get(f'description-{item_id}')
+    description = request.form.get('description')
 
-    if not desc:
-        flash('A description is required', f'list-{list_id}')
+    if not description:
+        flash('A description is required', f'todo-{todolist.id}')
 
     else:
 
-        item.description = desc[:max_input_length]
+        item.description = description[:max_input_length]
 
-        completed = True if request.form.get(f'completed-{item_id}') else False
+        completed = True if request.form.get('completed') else False
 
         # update completed only if the state changed (probably not needed)
         if completed is not item.completed:
