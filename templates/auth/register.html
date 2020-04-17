@@ -1,39 +1,30 @@
 {% extends 'layout.html' %}
 
 {% block header %}
-    <h1>{% block title %}Register{% endblock %}</h1>
+<h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <p class="whisper">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
-        <form method="post">
-            <fieldset>
-                <label for="email">Email</label>
-                <input type="text" name="email" id="email" required>
-            </fieldset>
-            <fieldset>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
-            </fieldset>
-            <fieldset>
-                <input type="submit" value="Register">
-            </fieldset>
-        </form>
-        {% for message in get_flashed_messages(category_filter=["auth"]) %}
-            <div class="flash">{{ message }}</div>
-        {% endfor %}
-    </div>
+<div class="container">
+    <p class="whisper">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+    <form method="post">
+        <fieldset>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" required>
+        </fieldset>
+        <fieldset>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+        </fieldset>
+        <fieldset>
+            <input type="submit" value="Register">
+        </fieldset>
+    </form>
+    {% for message in get_flashed_messages(category_filter=["auth"]) %}
+    <p class="flash">{{ message }}</p>
+    {% endfor %}
+</div>
 
-    <div class="todo--container">
-        <div class="todo--card">
-            <h2 class="todo--title">Things to do</h2>
-            <ul class="todo-list">
-                <li>Register</li>
-                <li>Login</li>
-                <li>Improve your productivity</li>
-            </ul>
-        </div>
-    </div>
+{% include 'list_items_readonly.html' %}
 
 {% endblock %}
