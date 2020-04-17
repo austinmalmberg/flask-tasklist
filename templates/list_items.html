@@ -12,13 +12,14 @@
             >
             <input
                     type="text"
+                    class="todo--item {{ 'checked' if item.completed }}"
                     name="description"
                     oninput="handleItemOnInput()"
                     data-original-value="{{ item.description }}"
                     value="{{ item.description }}"
                     maxlength="{{ max_length }}"
             >
-            <input type="submit" class="btn-remove" value="Remove">
+            <input type="submit" class="btn-delete" title="Remove item" value="">
         </form>
     </li>
     {% endfor %}
@@ -27,8 +28,8 @@
     <li>
         <form method="post" action="/{{ todolist.id }}/additem" onsubmit="preventDefault()">
             <input type="checkbox" id="completed" name="completed">
-            <input type="text" id="description" name="description" placeholder="New Item" maxlength="{{ max_length }}">
-            <input type="submit" class="create--list" value="Add New">
+            <input type="text" class="todo--item" id="description" name="description" placeholder="New Item" maxlength="{{ max_length }}">
+            <input type="submit" class="btn-add" title="Add item" value="">
         </form>
     </li>
 </ul>

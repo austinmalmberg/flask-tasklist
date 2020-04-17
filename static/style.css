@@ -3,7 +3,7 @@
 }
 
 html {
-    font-size: 20px;
+    font-size: 24px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -13,10 +13,6 @@ body {
     max-width: 1200px;
 
     padding: 1em;
-}
-
-input[type="text"], input[type="password"] {
-    padding: 0.5em;
 }
 
 .flash {
@@ -29,7 +25,40 @@ input[type="text"], input[type="password"] {
 .whisper {
     font-size: 0.8em;
     font-style: oblique;
-    color: #999;
+    opacity: 60%;
+}
+
+
+/*              FORMS               */
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+
+    padding: 0.5em 0;
+    border: none;
+}
+
+input {
+    font-size: 0.8em;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 0.3em;
+}
+
+
+/*              BRAND                   */
+
+.brand--title {
+    margin: 0;
+    font-size: 2em;
+}
+
+.brand--slogan {
+    margin: 0;
+    margin-left: 0.4em;
+    font-size: 0.8em;
 }
 
 
@@ -39,11 +68,6 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-nav .slogan {
-    margin: 0.25em 0;
-    font-style: oblique;
 }
 
 nav a {
@@ -85,8 +109,18 @@ nav a {
     background-color: #eee;
 }
 
+.todo--item {
+    border: none;
+    background: transparent;
+}
+
+.todo--item:hover {
+    background: white;
+}
+
 .todo--list {
     padding: 0;
+    margin: 0;
 }
 
 .todo--title {
@@ -97,30 +131,43 @@ nav a {
     position: relative;
     list-style-type: none;
 
-    margin: 0.5em 0;
-
-    padding: 0.3em;
+    padding: 0.2em;
 
     border: 1px solid #eee;
 }
 
 .checked {
-    color: #999;
+    opacity: 50%;
     text-decoration: line-through;
-}
-
-
-/*              FORMS               */
-
-fieldset {
-    display: flex;
-    flex-direction: column;
-
-    padding: 0.5em 0;
-    border: none;
 }
 
 .todo--title {
     font-weight: bold;
     font-size: 1em;
+}
+
+.todo--card input[type=submit] {
+    height: 2em;
+    width: 2em;
+    border: none;
+    opacity: 40%;
+}
+
+.todo--card input[type=submit]:hover {
+    opacity: 100%;
+}
+
+.btn-add {
+    background: url("images/green_plus.png") no-repeat center;
+    background-size: 100% 100%;
+}
+
+.btn-update {
+    background: url("images/blue_arrow.png") no-repeat center;
+    background-size: 100% 100%;
+}
+
+.btn-delete {
+    background: url("images/red_x.png") no-repeat center;
+    background-size: 100% 100%;
 }

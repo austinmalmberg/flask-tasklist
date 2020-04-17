@@ -1,8 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-<h1>{% block title %}Todo List{% endblock %}</h1>
-{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 
@@ -20,7 +18,7 @@
                     value="{{ todolist.name }}"
                     maxlength="{{ max_length }}"
             >
-            <input type="submit" value="Delete">
+            <input type="submit" class="btn-delete" title="Delete list" value="">
         </form>
 
         {% include 'list_items.html' ignore missing %}
@@ -34,7 +32,7 @@
 
     <div class="todo--card">
         <form method="post" action="/create">
-            <input type="submit" value="+">
+            <input type="submit" class="btn-add" title="New list" value="">
         </form>
     </div>
 

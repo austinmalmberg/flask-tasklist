@@ -5,7 +5,7 @@
             {% for item in todolist.items %}
             <li>
                 <input type="checkbox" value="{{ item.completed }}" disabled {{ "checked" if item.completed }}>
-                <input type="text" value="{{ item.description }}" readonly>
+                <input type="text" class="todo--item {{ 'checked' if item.completed }}" value="{{ item.description }}" readonly>
             </li>
             {% endfor %}
         </ul>
