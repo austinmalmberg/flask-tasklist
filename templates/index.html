@@ -9,26 +9,36 @@
 {% if g.user %}
 <div class="todo--container">
 
-		{% for todolist in todolists %}
-			<div class="todo--card">
-				<form method="post" action="/{{ todolist.id }}/delete">
-					<input type="text" id="todo-{{ todolist.id }}--title" name="todo-{{ todolist.id }}--title" class="todo--title" oninput="handleListOnInput();dynamicWidth();" data-original-value="{{ todolist.name }}" value="{{ todolist.name }}">
-					<input type="submit" value="Delete">
-				</form>
+    {% for todolist in todolists %}
+    <div class="todo--card">
+        <form method="post" action="/{{ todolist.id }}/delete">
+            <input
+                    type="text"
+                    id="todo-{{ todolist.id }}--title"
+                    name="todo-{{ todolist.id }}--title"
+                    class="todo--title" oninput="handleListOnInput()"
+                    data-original-value="{{ todolist.name }}"
+                    value="{{ todolist.name }}"
+                    maxlength="{{ max_length }}"
+            >
+            <input type="submit" value="Delete">
+        </form>
 
-				{% include 'listitems.html' ignore missing %}
+        {% include 'list_items.html' ignore missing %}
 
-				{% for notification in get_flashed_messages(category_filter=["list-" ~ todolist.id]) %}
-					<p>{{ notification }}</p>
-				{% endfor %}
-			</div>
-		{% endfor %}
+        {% for notification in get_flashed_messages(category_filter=["list-" ~ todolist.id]) %}
+        <p class="flash">{{ notification }}</p>
+        {% endfor %}
 
-		<div class="todo--card">
-			<form method="post" action="/create">
-				<input type="submit" value="+">
-			</form>
-		</div>
+    </div>
+    {% endfor %}
+
+    <div class="todo--card">
+        <form method="post" action="/create">
+            <input type="submit" value="+">
+        </form>
+    </div>
+
 </div>
 {% endif %}
 
