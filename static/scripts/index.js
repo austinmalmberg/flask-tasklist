@@ -4,12 +4,20 @@ function handleListOnInput() {
 
 
 function handleItemOnInput() {
+    if (event.target.type === 'checkbox') {
+        const frm = event.target.parentNode;
+
+        const textInput = frm.querySelector('input[type=text]');
+        textInput.classList.toggle('checked');
+    }
+
     handleOnInput(setItemUpdate, setItemRemove);
 }
 
 
 function handleOnInput(onChange, onUnchanged) {
     const frm = event.target.parentNode;
+
     // if the description or checkbox value is not equal to data-original-value then
     for (let e of frm.getElementsByTagName('input')) {
         if (e.type === 'submit')
@@ -36,9 +44,9 @@ function setListUpdate(frm) {
     if (frm.action != newAction) {
         frm.action = newAction;
 
-        // update button text
         const submit = frm.querySelector('input[type=submit]');
-        submit.value = "Update";
+        submit.className = 'btn-update';
+        submit.title = "Update list name"
     }
 }
 
@@ -49,9 +57,9 @@ function setListDelete(frm) {
     if (frm.action != newAction) {
         frm.action = newAction;
 
-        // update button text
         const submit = frm.querySelector('input[type=submit]');
-        submit.value = "Delete";
+        submit.className = 'btn-delete';
+        submit.title = "Delete list"
     }
 }
 
@@ -62,9 +70,9 @@ function setItemUpdate(frm) {
     if (frm.action != newAction) {
         frm.action = newAction;
 
-        // update button text
         const submit = frm.querySelector('input[type=submit]');
-        submit.value = "Update";
+        submit.className = 'btn-update';
+        submit.title = "Update item"
     }
 }
 
@@ -75,8 +83,8 @@ function setItemRemove(frm) {
     if (frm.action != newAction) {
         frm.action = newAction;
 
-        // update button text
         const submit = frm.querySelector('input[type=submit]');
-        submit.value = "Remove";
+        submit.className = 'btn-delete';
+        submit.title = "Remove item"
     }
 }
