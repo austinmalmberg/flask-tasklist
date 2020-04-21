@@ -24,17 +24,20 @@ login_todolist = TodoList(name='Things to do', items=[
 def register():
     if request.method == 'POST':
 
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm-password')
 
         error = None
 
         if not email:
             error = 'Email is required.'
-        elif not password:
-            error = 'Password is required.'
         elif User.query.filter_by(email=email).first() is not None:
             error = f"Email address is already registered."
+        elif not password:
+            error = 'Password is required.'
+        elif not confirm_password or password != confirm_password:
+            error = 'Passwords do not match.'
 
         if error is None:
             user = User(
@@ -54,8 +57,8 @@ def register():
 def login():
     if request.method == 'POST':
 
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email')
+        password = request.form.get('password')
 
         user = User.query.filter_by(email=email).first()
 

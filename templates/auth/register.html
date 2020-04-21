@@ -17,6 +17,10 @@
             <input type="password" name="password" id="password" required>
         </fieldset>
         <fieldset>
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="confirm-password" id="confirm-password" required>
+        </fieldset>
+        <fieldset>
             <input type="submit" value="Register">
         </fieldset>
     </form>
@@ -25,6 +29,6 @@
     {% endfor %}
 </div>
 
-{% include 'list_items_readonly.html' %}
+{% include 'todolist/todolist_readonly.html' %}
 
 {% endblock %}

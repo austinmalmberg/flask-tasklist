@@ -1,12 +1,12 @@
 import functools
 
-from flask import Blueprint, render_template, g, request, redirect, url_for, flash
+from flask import Blueprint, render_template, g, request, redirect, url_for, flash, render_template_string
 from werkzeug.exceptions import abort
 
 from database import db, TodoList, Item
 from routes.auth import login_required
 
-bp = Blueprint('items', __name__)
+bp = Blueprint('todolist', __name__)
 
 max_input_length = 26
 
@@ -75,7 +75,7 @@ def update(list_id, todolist):
     new_name = request.form.get(f'todo--name')
 
     if not new_name:
-        flash('A list title is required', f'todo-{todolist.id}')
+        flash('A list title is required', f'list-{todolist.id}')
 
     else:
         todolist.name = new_name[:max_input_length]
@@ -107,7 +107,7 @@ def add_item(list_id, todolist):
     description = request.form.get('description')
 
     if not description:
-        flash('A description is required', f'todo-{list_id}')
+        flash('A description is required', f'list-{list_id}')
 
     else:
         completed = True if request.form.get('completed') else False
@@ -136,7 +136,7 @@ def update_item(list_id, item_id, todolist):
     description = request.form.get('description')
 
     if not description:
-        flash('A description is required', f'todo-{todolist.id}')
+        flash('A description is required', f'list-{todolist.id}')
 
     else:
 
@@ -153,7 +153,7 @@ def update_item(list_id, item_id, todolist):
     return redirect(url_for('index'))
 
 
-@bp.route('/<int:list_id>/<int:item_id>/remove', methods=('POST',))
+@bp.route('/<int:list_id>/<int:item_id>/delete', methods=('POST',))
 @login_required
 @authorize_list_action
 def remove(list_id, item_id, todolist):

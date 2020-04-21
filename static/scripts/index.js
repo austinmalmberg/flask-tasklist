@@ -1,90 +1,171 @@
-function handleListOnInput() {
-    handleOnInput(setListUpdate, setListDelete);
-}
+function handleOnInput() {
+    const target = event.target;
+    const form = target.parentNode;
 
+    const isCheckbox = (node) => node.type === 'checkbox';
+    const isText = (node) => node.type === 'text';
+    const matches = (v1, v2) => v1 === v2;
 
-function handleItemOnInput() {
-    if (event.target.type === 'checkbox') {
-        const frm = event.target.parentNode;
-
-        const textInput = frm.querySelector('input[type=text]');
-        textInput.classList.toggle('checked');
+    const setShowDelete = (show) => {
+        const btn = form.querySelector('input[value="Delete"]');
+        btn.hidden = !show;
+    }
+    const setShowUpdate = (show) => {
+        const btn = form.querySelector('input[value="Update"]');
+        btn.hidden = !show;
     }
 
-    handleOnInput(setItemUpdate, setItemRemove);
-}
+    for (let node of form.getElementsByTagName('input')) {
 
+        // get the original content
+        const origValue = node.getAttribute('data-original-value');
 
-function handleOnInput(onChange, onUnchanged) {
-    const frm = event.target.parentNode;
+        // skip elements who don't have the 'data-original-value' attribute
+        if (origValue === null) continue;
 
-    // if the description or checkbox value is not equal to data-original-value then
-    for (let e of frm.getElementsByTagName('input')) {
-        if (e.type === 'submit')
-            continue;
+        const contentChanged = isCheckbox(node) && !matches(node.checked, origValue === 'checked') ||
+                isText(node) && !matches(node.value, origValue);
 
-        const orig = e.getAttribute('data-original-value');
+        if (contentChanged) {
+            // set visible form button to update
+            setShowDelete(false);
+            setShowUpdate(true);
 
-        const checkboxChanged = e.type === 'checkbox' && e.checked !== (orig === 'checked');
-        const textChanged = e.type === 'text' && orig !== e.value;
-
-        if (checkboxChanged || textChanged) {
-            onChange(frm);
-            return;
+            return true;
         }
     }
 
-    onUnchanged(frm);
+    // set visible form button to delete
+    setShowDelete(true);
+    setShowUpdate(false);
+
+    return false;
 }
 
+// form submission timeout ids
+// an object to track form submission timeouts
+const submissions = {};
+const autoSubmitTimeout = 1500;
+const flashMessages = {
+    'queued': "Queued",
+    'saving': "Saving...",
+    'saved': "Saved",
+    'error': (msg) => msg
+};
 
-function setListUpdate(frm) {
-    const newAction = frm.action.replace('delete', 'update');
+function autoSubmit() {
 
-    if (frm.action != newAction) {
-        frm.action = newAction;
+    const form = event.target.parentNode;
 
-        const submit = frm.querySelector('input[type=submit]');
-        submit.className = 'btn-update';
-        submit.title = "Update list name"
+    if (form.id in submissions) {
+        clearTimeout(submissions[form.id]);
+        delete submissions[form.id];
+    }
+
+    // compare each input with its original value (ignore type='submit')
+    if (contentChanged(form)) {
+        submissions[form.id] = newTimeout(form);
+    }
+
+
+    function newTimeout(form) {
+        return setTimeout(() => {
+            form.submit();
+            delete submissions[form.id];
+        }, 3000);
+    }
+
+
+    function contentChanged(form) {
+        const isCheckbox = (node) => node.type === 'checkbox';
+        const isText = (node) => node.type === 'text';
+        const matches = (v1, v2) => v1 === v2;
+
+        for (let node of form.getElementsByTagName('input')) {
+
+            // get the original content
+            const origValue = node.getAttribute('data-original-value');
+
+            // skip elements who don't have the 'data-original-value' attribute
+            if (!origValue) continue;
+
+            const contentChanged = isCheckbox(node) && !matches(node.checked, origValue === 'checked') ||
+                    isText(node) && !matches(node.value, origValue);
+
+            if (contentChanged) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+function autoSubmitNoRefresh() {
+
+    const form = event.target.parentNode;
+
+    // stop submission if the form is queued to submit
+    if (form.id in submissions) {
+        clearTimeout(submissions[form.id]);
+        delete submissions[form.id];
+    }
+
+    // add a new timeout if the content was changed
+    if (inputChanged(form)) {
+        submissions[form.id] = newTimeout(form);
+    }
+
+
+    function newTimeout(form) {
+        return setTimeout(() => {
+            fetchHTML(form);
+            delete submissions[form.id];
+        }, autoSubmitTimeout);
+
+
+        async function fetchHTML(form) {
+            const response = await fetch(form.action, { method: 'POST' });
+            if (response.status === 200) {
+                const data = await response.text();
+                console.log(data);
+            } else {
+                console.log(response);
+            }
+        }
     }
 }
 
 
-function setListDelete(frm) {
-    const newAction = frm.action.replace('update', 'delete');
+function inputChanged(form) {
+    const isCheckbox = (node) => node.type === 'checkbox';
+    const isText = (node) => node.type === 'text';
+    const matches = (v1, v2) => v1 === v2;
 
-    if (frm.action != newAction) {
-        frm.action = newAction;
+    for (let node of form.getElementsByTagName('input')) {
 
-        const submit = frm.querySelector('input[type=submit]');
-        submit.className = 'btn-delete';
-        submit.title = "Delete list"
+        // get the original content
+        const origValue = node.getAttribute('data-original-value');
+
+        // skip elements who don't have the 'data-original-value' attribute
+        if (origValue === null) continue;
+
+        const contentChanged = isCheckbox(node) && !matches(node.checked, origValue === 'checked') ||
+                isText(node) && !matches(node.value, origValue);
+
+        if (contentChanged) return true;
     }
+
+    return false;
 }
 
 
-function setItemUpdate(frm) {
-    const newAction = frm.action.replace('remove', 'update');
+function replaceElement(oldElement, newElement) {
 
-    if (frm.action != newAction) {
-        frm.action = newAction;
 
-        const submit = frm.querySelector('input[type=submit]');
-        submit.className = 'btn-update';
-        submit.title = "Update item"
-    }
 }
 
 
-function setItemRemove(frm) {
-    const newAction = frm.action.replace('update', 'remove');
+function insertElementBefore(element, newElement) {
 
-    if (frm.action != newAction) {
-        frm.action = newAction;
-
-        const submit = frm.querySelector('input[type=submit]');
-        submit.className = 'btn-delete';
-        submit.title = "Remove item"
-    }
 }

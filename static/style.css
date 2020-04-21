@@ -1,9 +1,5 @@
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
 html {
-    font-size: 24px;
+    font-size: calc(max(100vh, min(1440px, 100vw)) * .015);
     font-family: 'Roboto', sans-serif;
 }
 
@@ -15,159 +11,34 @@ body {
     padding: 1em;
 }
 
-.flash {
-    font-size: 0.8rem;
-    font-style: oblique;
-
-    color: red;
-}
-
-.whisper {
-    font-size: 0.8em;
-    font-style: oblique;
-    opacity: 60%;
-}
-
-
-/*              FORMS               */
-
-fieldset {
-    display: flex;
-    flex-direction: column;
-
-    padding: 0.5em 0;
-    border: none;
-}
-
-input {
-    font-size: 0.8em;
-}
-
-input[type="text"], input[type="password"] {
-    padding: 0.3em;
-}
-
-
-/*              BRAND                   */
-
-.brand--title {
+.nav-list {
+    list-style: none;
     margin: 0;
-    font-size: 2em;
 }
-
-.brand--slogan {
-    margin: 0;
-    margin-left: 0.4em;
-    font-size: 0.8em;
-}
-
-
-/*              NAVIGATION              */
 
 nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 
-nav a {
-    text-decoration: none;
-}
-
-.nav-list {
-    display: flex;
-    list-style-type: none;
-
-    padding: 0;
-}
-
-.nav-list li {
-    padding: 0 1em;
-    display: inline;
-}
-
-
-/*              TODO LIST               */
-
-.todo--container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    margin: 1em;
-    padding: 1em;
-}
-
-.todo--card {
-    display: inline-block;
-
-    min-width: 25%;
-
-    margin: 0.5em;
-    padding: 1em;
-
-    background-color: #eee;
-}
-
-.todo--item {
-    border: none;
-    background: transparent;
-}
-
-.todo--item:hover {
-    background: white;
-}
-
-.todo--list {
-    padding: 0;
+.brand * {
     margin: 0;
 }
 
-.todo--title {
-    margin: 0.5em 0;
+.todo--container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-gap: 0.5em;
+
+    margin: 1em 0;
 }
 
-.todo--list li {
-    position: relative;
+.todo--card {
+    padding: 0.25em;
+    border: 1px solid black;
+}
+
+.todo--list {
     list-style-type: none;
-
-    padding: 0.2em;
-
-    border: 1px solid #eee;
-}
-
-.checked {
-    opacity: 50%;
-    text-decoration: line-through;
-}
-
-.todo--title {
-    font-weight: bold;
-    font-size: 1em;
-}
-
-.todo--card input[type=submit] {
-    height: 2em;
-    width: 2em;
-    border: none;
-    opacity: 40%;
-}
-
-.todo--card input[type=submit]:hover {
-    opacity: 100%;
-}
-
-.btn-add {
-    background: url("images/green_plus.png") no-repeat center;
-    background-size: 100% 100%;
-}
-
-.btn-update {
-    background: url("images/blue_arrow.png") no-repeat center;
-    background-size: 100% 100%;
-}
-
-.btn-delete {
-    background: url("images/red_x.png") no-repeat center;
-    background-size: 100% 100%;
 }

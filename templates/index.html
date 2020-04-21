@@ -8,31 +8,12 @@
 <div class="todo--container">
 
     {% for todolist in todolists %}
-    <div class="todo--card">
-        <form method="post" action="/{{ todolist.id }}/delete">
-            <input
-                    type="text"
-                    name="todo--name"
-                    class="todo--title" oninput="handleListOnInput()"
-                    data-original-value="{{ todolist.name }}"
-                    value="{{ todolist.name }}"
-                    maxlength="{{ max_length }}"
-            >
-            <input type="submit" class="btn-delete" title="Delete list" value="">
-        </form>
-
-        {% include 'list_items.html' ignore missing %}
-
-        {% for notification in get_flashed_messages(category_filter=["todo-" ~ todolist.id]) %}
-        <p class="flash">{{ notification }}</p>
-        {% endfor %}
-
-    </div>
+    {% include 'todolist/todolist.html' ignore missing %}
     {% endfor %}
 
     <div class="todo--card">
-        <form method="post" action="/create">
-            <input type="submit" class="btn-add" title="New list" value="">
+        <form id="newlist" method="post" action="/create">
+            <input type="submit" class="btn-add" title="Create list" value="Create List">
         </form>
     </div>
 

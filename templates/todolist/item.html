@@ -1,0 +1,22 @@
+<form id="item-{{ item.id }}" method="post" action="/{{ todolist.id }}/{{ item.id }}/update">
+    <input
+            type="checkbox"
+            name="completed"
+            oninput="autoSubmit()"
+            data-original-value="{{ 'checked' if item.completed else 'unchecked' }}"
+            value="completed"
+            {{ "checked" if item.completed }}
+    >
+    <input
+            type="text"
+            class="todo--item {{ 'checked' if item.completed }}"
+            name="description"
+            oninput="autoSubmit()"
+            data-original-value="{{ item.description }}"
+            value="{{ item.description }}"
+            maxlength="{{ max_length }}"
+    >
+    <input type="submit" class="btn-update" title="Update item" value="Update" hidden>
+    <input type="submit" formaction="/{{ todolist.id }}/{{ item.id }}/delete" class="btn-delete"
+           title="Delete {{ item.description }}" value="Delete">
+</form>
