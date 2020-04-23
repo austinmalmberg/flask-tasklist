@@ -1,6 +1,6 @@
-# Todo Lists
+# Tasklists
 
-A web application manages items in a todo list
+A web application manages items in a tasklist
 
 ## Endpoints
 
@@ -31,7 +31,7 @@ A web application manages items in a todo list
 
 ***HTTP Methods***
 
-**POST** | Adds an item to the todo list from JSON data provided in the body
+**POST** | Adds an item to the tasklist from JSON data provided in the body
 
     {
         description: <string>

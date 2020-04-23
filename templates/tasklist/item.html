@@ -1,0 +1,30 @@
+<form id="item-{{ item.id }}" class="item--form" method="post" action="/{{ tasklist.id }}/{{ item.id }}/update"
+      onsubmit="return false" onkeydown="return event.key != 'Enter';">
+    <input
+            type="checkbox"
+            class="item--checkbox"
+            id="completed-{{ item.id }}"
+            name="completed"
+            oninput="updateInputClassList();autoSubmit()"
+            data-original-value="{{ 'checked' if item.completed else 'unchecked' }}"
+            value="completed"
+            {{ "checked" if item.completed }}>
+    <label for="completed-{{ item.id }}">
+        <input
+                type="text"
+                class="task--item{{ ' checked' if item.completed }}"
+                name="description"
+                oninput="autoSubmit()"
+                data-original-value="{{ item.description }}"
+                value="{{ item.description }}"
+                required
+                maxlength="{{ max_length }}"
+                autocomplete="off">
+    </label>
+    <button onclick="handleDelete('.list--item')"
+            formaction="/{{ tasklist.id }}/{{ item.id }}/delete"
+            formmethod="post"
+            class="btn-icon btn-delete"
+            title="Delete {{ item.description }}">Delete
+    </button>
+</form>

@@ -1,34 +1,35 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-<h1>{% block title %}Register{% endblock %}</h1>
-{% endblock %}
-
 {% block content %}
-<div class="container">
-    <p class="whisper">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
-    <form method="post">
-        <fieldset>
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" required>
-        </fieldset>
-        <fieldset>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-        </fieldset>
-        <fieldset>
-            <label for="confirm-password">Confirm Password</label>
-            <input type="password" name="confirm-password" id="confirm-password" required>
-        </fieldset>
-        <fieldset>
-            <input type="submit" value="Register">
-        </fieldset>
-    </form>
-    {% for message in get_flashed_messages(category_filter=["auth"]) %}
-    <p class="flash">{{ message }}</p>
-    {% endfor %}
-</div>
+<article>
+    <section>
+        <h2>{% block title %}Register{% endblock %}</h2>
+        <p class="detail">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
 
-{% include 'todolist/todolist_readonly.html' %}
+        <form method="post">
+            <fieldset>
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" required>
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </fieldset>
+            <fieldset>
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" id="confirm-password" required>
+            </fieldset>
+            <fieldset>
+                <button>Register</button>
+            </fieldset>
+        </form>
+
+        {% for message in get_flashed_messages(category_filter=["auth"]) %}
+        <p class="flash">{{ message }}</p>
+        {% endfor %}
+    </section>
+
+    {% include 'tasklist/tasklist_readonly.html' %}
+</article>
 
 {% endblock %}

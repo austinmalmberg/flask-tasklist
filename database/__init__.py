@@ -16,14 +16,14 @@ class User(db.Model):
     email = db.Column(db.String(60), unique=True, nullable=False)
     pw_hash = db.Column(db.String(120), nullable=False)
 
-    lists = db.relationship('TodoList')
+    lists = db.relationship('TaskList')
 
     def __repr__(self):
         return f'<User {self.email}>'
 
 
-class TodoList(db.Model):
-    __tablename__ = 'todolist'
+class TaskList(db.Model):
+    __tablename__ = 'tasklist'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -32,14 +32,14 @@ class TodoList(db.Model):
     items = db.relationship('Item')
 
     def __repr__(self):
-        return f'<List {self.name} (owned by {self.user_id})>'
+        return f'<Tasklist {self.name} (owned by {self.user_id})>'
 
 
 class Item(db.Model):
     __tablename__ = 'item'
 
     id = db.Column(db.Integer, primary_key=True)
-    list_id = db.Column(db.Integer, db.ForeignKey('todolist.id'))
+    list_id = db.Column(db.Integer, db.ForeignKey('tasklist.id'))
     description = db.Column(db.String(80), nullable=False)
     completed = db.Column(db.Boolean, default=False)
 

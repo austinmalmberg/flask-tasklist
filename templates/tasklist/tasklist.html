@@ -1,0 +1,20 @@
+<section class="tasklist--card">
+    {% include 'tasklist/tasklist_header.html' %}
+    <ul class="task--list">
+        {% for item in tasklist.items %}
+        <li class="list--item">{% include 'tasklist/item.html' %}</li>
+        {% endfor %}
+        {# empty list item #}
+        <li class="last list--item">
+            <form method="post" action="{{ tasklist.id }}/additem" onsubmit="handleAddItem()">
+                <input id="tasklist-{{ tasklist.id }}-newitem" type="checkbox" oninput="updateInputClassList()" name="completed">
+                <label for="tasklist-{{ tasklist.id }}-newitem">
+                    <input type="text" class="task--item" name="description" placeholder="New Item"
+                           maxlength="{{ max_length }}" required>
+                </label>
+                <button class="btn-icon btn-add" title="Add Item">Add</button>
+            </form>
+        </li>
+    </ul>
+    <p class="flash success">Up to date</p>
+</section>

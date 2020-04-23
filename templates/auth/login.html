@@ -1,29 +1,30 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-<h1>{% block title %}Login{% endblock %}</h1>
-{% endblock %}
-
 {% block content %}
-<div class="container">
-    <p class="whisper">Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register</a></p>
-    <form method="post" action="/login">
-        <fieldset>
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email" required>
-        </fieldset>
-        <fieldset>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-        </fieldset>
-        <fieldset>
-            <input type="submit" value="Login">
-        </fieldset>
-    </form>
-    {% for message in get_flashed_messages(category_filter=["auth"]) %}
-    <p class="flash">{{ message }}</p>
-    {% endfor %}
-</div>
+<article>
+    <section>
+        <h2>{% block title %}Login{% endblock %}</h2>
+        <p class="detail">Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register</a></p>
 
-{% include 'todolist/todolist_readonly.html' %}
+        <form method="post" action="/login">
+            <fieldset>
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" required>
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </fieldset>
+            <fieldset>
+                <button>Login</button>
+            </fieldset>
+        </form>
+
+        {% for message in get_flashed_messages(category_filter=["auth"]) %}
+        <p class="flash">{{ message }}</p>
+        {% endfor %}
+    </section>
+
+    {% include 'tasklist/tasklist_readonly.html' %}
+</article>
 {% endblock %}

@@ -1,27 +1,24 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} | Todo Lists</title>
+<title>{% block title %}{% endblock %} | Tasklists</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 <nav>
-    <div class="brand">
-        <h2 class="brand--title">Todo Lists</h2>
-        <p class="brand--slogan">Increase your productivity</p>
-    </div>
-    <ul class="nav-list">
+    <a href="/">
+        <p class="brand title">Tasklists</p>
+        <p class="brand slogan">Keep your shit together!</p>
+    </a>
+    <ul class="nav--list">
         {% if g.user %}
-        <li><a href="{{ url_for('auth.logout') }}">Logout</a>
+        <li><a class="nav--item btn" href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
-        <li><a href="{{ url_for('auth.register') }}">Register</a>
-        <li><a href="{{ url_for('auth.login') }}">Login</a>
+        <li><a class="nav--item btn" href="{{ url_for('auth.register') }}">Register</a>
+        <li><a class="nav--item btn" href="{{ url_for('auth.login') }}">Login</a>
             {% endif %}
     </ul>
 </nav>
 
 <main class="content">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
     {% block content %}{% endblock %}
 </main>
 
