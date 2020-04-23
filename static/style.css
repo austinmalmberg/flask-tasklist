@@ -31,7 +31,7 @@ Table of Contents
     --line-thickness: 20%;
     --line-vertical-start: calc(50% - var(--line-thickness) / 2);
     --line-horizontal-start: calc(50% - var(--line-width) / 2);
-    --line-border-radius: 10%;
+    --line-border-radius: 0.1em;
 
 
     /* colors */
@@ -269,23 +269,24 @@ nav a {
 
 /* 3.1.3 Tasklist Buttons */
 
-.big {
+button.big {
     width: 6em;
     height: 6em;
+}
+
+.list--item .btn-add,
+.list--item .btn-delete {
+    padding: 0.7em;
 }
 
 .btn-add,
 .btn-delete {
     position: relative;
-    font-size: 0.7em;
-
-    text-indent: -9999px;
 }
 
 .btn-add::before,
 .btn-add::after,
-.btn-delete::before,
-.btn-delete::after {
+.btn-delete::before {
     content: '';
     position: absolute;
     background-color: var(--button-color-light);
