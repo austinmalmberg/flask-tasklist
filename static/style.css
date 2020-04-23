@@ -274,6 +274,10 @@ button.big {
     height: 6em;
 }
 
+.tasklist--header button {
+    font-size: 0.75em;
+}
+
 .list--item .btn-add,
 .list--item .btn-delete {
     padding: 0.7em;
