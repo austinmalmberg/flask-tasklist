@@ -50,7 +50,7 @@ def index():
     tasklists = []
 
     if g.user:
-        tasklists = TaskList.query.filter_by(user_id=g.user.id).order_by(id).all() or []
+        tasklists = TaskList.query.filter_by(user_id=g.user.id).order_by(TaskList.id).all() or []
 
     return render_template('index.html', max_length=max_input_length, tasklists=tasklists)
 
