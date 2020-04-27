@@ -20,8 +20,8 @@
         </fieldset>
     </form>
 
-    {% for message in get_flashed_messages(category_filter=["auth"]) %}
-    <p class="flash">{{ message }}</p>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="flash {{ category }}">{{ message }}</p>
     {% endfor %}
 </div>
 

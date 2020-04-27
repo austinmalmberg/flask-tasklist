@@ -31,13 +31,13 @@ def register():
         error = None
 
         if not email:
-            error = 'Email is required.'
+            error = 'Email is required'
         elif User.query.filter_by(email=email).first() is not None:
-            error = f"Email address is already registered."
+            error = f"Email address is already registered"
         elif not password:
-            error = 'Password is required.'
+            error = 'Password is required'
         elif not confirm_password or password != confirm_password:
-            error = 'Passwords do not match.'
+            error = 'Passwords do not match'
 
         if error is None:
             user = User(
@@ -48,7 +48,7 @@ def register():
             db.session.commit()
             return redirect(url_for('auth.login'))
 
-        flash(error, 'auth')
+        flash(error, 'error')
 
     return render_template('auth/register.html', tasklist=register_tasklist)
 
@@ -65,16 +65,16 @@ def login():
         error = None
 
         if user is None:
-            error = 'Invalid email.'
+            error = 'Invalid email'
         elif not check_password_hash(user.pw_hash, password):
-            error = 'Incorrect password.'
+            error = 'Incorrect password'
 
         if error is None:
             session.clear()
             session['user_id'] = user.id
             return redirect(url_for('index'))
 
-        flash(error, 'auth')
+        flash(error, 'error')
 
     return render_template('auth/login.html', tasklist=login_tasklist)
 
