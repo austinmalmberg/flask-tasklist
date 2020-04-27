@@ -279,7 +279,8 @@ button.big {
 
 .list--item .btn-add,
 .list--item .btn-delete {
-    padding: 0.7em;
+    padding: 0.6em;
+    transform: translateY(-0.3em);
 }
 
 .btn-add,
