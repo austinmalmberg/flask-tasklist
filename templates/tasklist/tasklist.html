@@ -1,4 +1,4 @@
-<section class="tasklist--card">
+<div class="wrapper tasklist--card">
     {% include 'tasklist/tasklist_header.html' %}
     <ul class="task--list">
         {% for item in tasklist.items %}
@@ -8,7 +8,7 @@
         <li class="last list--item">
             <form method="post" action="{{ tasklist.id }}/additem" onsubmit="handleAddItem()">
                 <input id="tasklist-{{ tasklist.id }}-newitem" type="checkbox" oninput="updateInputClassList()" name="completed">
-                <label for="tasklist-{{ tasklist.id }}-newitem">
+                <label>
                     <input type="text" class="task--item" name="description" placeholder="New Item"
                            maxlength="{{ max_length }}" required>
                 </label>
@@ -17,4 +17,4 @@
         </li>
     </ul>
     <p class="flash success">Up to date</p>
-</section>
+</div>

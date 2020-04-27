@@ -76,7 +76,7 @@ main {
     margin: 1em 0;
 }
 
-section {
+.wrapper {
     padding: 1.5em;
     background-color: var(--primary-background-light);
     margin: 0.5em;

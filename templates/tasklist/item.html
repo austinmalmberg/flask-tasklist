@@ -9,7 +9,7 @@
             data-original-value="{{ 'checked' if item.completed else 'unchecked' }}"
             value="completed"
             {{ "checked" if item.completed }}>
-    <label for="completed-{{ item.id }}">
+    <label>
         <input
                 type="text"
                 class="task--item{{ ' checked' if item.completed }}"

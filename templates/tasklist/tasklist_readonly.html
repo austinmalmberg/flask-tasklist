@@ -1,17 +1,17 @@
-<section class="tasklist--card">
+<div class="wrapper tasklist--card">
     <div class="tasklist--header">
         <input class="tasklist--name" type="text" value="{{ tasklist.name }}" readonly>
     </div>
     <ul class="task--list">
         {% for item in tasklist.items %}
-        <li>
-            <input id="sample-list" type="checkbox" value="{{ item.completed }}" disabled
+        <li class="list--item">
+            <input type="checkbox" value="{{ item.completed }}" disabled
                    {{ "checked" if item.completed}}>
-            <label for="sample-list">
+            <label>
                 <input type="text" class="task--item{{ ' checked' if item.completed }}" value="{{ item.description }}"
                        readonly>
             </label>
         </li>
         {% endfor %}
     </ul>
-</section>
+</div>

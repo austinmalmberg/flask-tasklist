@@ -5,18 +5,16 @@
 {% block content %}
 
 {% if g.user %}
-<article>
-    <div class="tasklist--container">
-        {% for tasklist in tasklists %}
-        {% include 'tasklist/tasklist.html' %}
-        {% endfor %}
+<div class="tasklist--container">
+    {% for tasklist in tasklists %}
+    {% include 'tasklist/tasklist.html' %}
+    {% endfor %}
 
-        <section id="last-card" class="last tasklist--card">
-            <button id="create-list" class="big btn-icon btn-add" onclick="handleCreateList()" formaction="/create"
-                    formmethod="post" title="Create List"></button>
-        </section>
+    <div id="last-card" class="wrapper last tasklist--card">
+        <button id="create-list" class="big btn-icon btn-add" onclick="handleCreateList()" formaction="/create"
+                formmethod="post" title="Create List"></button>
     </div>
-</article>
+</div>
 {% endif %}
 
 {% endblock %}
