@@ -27,12 +27,11 @@ Table of Contents
     --border-radius: 5px; /* for buttons */
 
     /* pseudo elements on index.html */
-    --line-width: 75%;
-    --line-thickness: 20%;
+    --line-width: 70%;
+    --line-thickness: 18%;
     --line-vertical-start: calc(50% - var(--line-thickness) / 2);
     --line-horizontal-start: calc(50% - var(--line-width) / 2);
     --line-border-radius: 0.1em;
-
 
     /* colors */
     --primary-background-light: #ecf0f1;
@@ -293,7 +292,7 @@ button.big {
 .btn-delete::before {
     content: '';
     position: absolute;
-    background-color: var(--button-color-light);
+    background-color: var(--primary-background-light);
     border-radius: var(--line-border-radius);
 }
 
