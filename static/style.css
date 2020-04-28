@@ -190,7 +190,13 @@ input[type=checkbox]:not(.default):checked + label:before {
     opacity: 50%;
     color: var(--primary-background-light);
     border-color: black;
+    transition-duration: 200ms;
 }
+
+input[type=checkbox]:not(.default) + label:active::before {
+    transform: scale(0);
+}
+
 
 
 /* 2.0 Header */
