@@ -2,25 +2,23 @@
       onsubmit="return false" onkeydown="return event.key != 'Enter';">
     <input
             type="checkbox"
-            class="item--checkbox"
             id="completed-{{ item.id }}"
             name="completed"
             oninput="updateInputClassList();autoSubmit()"
             data-original-value="{{ 'checked' if item.completed else 'unchecked' }}"
             value="completed"
             {{ "checked" if item.completed }}>
-    <label>
-        <input
-                type="text"
-                class="task--item{{ ' checked' if item.completed }}"
-                name="description"
-                oninput="autoSubmit()"
-                data-original-value="{{ item.description }}"
-                value="{{ item.description }}"
-                required
-                maxlength="{{ max_length }}"
-                autocomplete="off">
-    </label>
+    <label for="completed-{{ item.id }}"></label>
+    <input
+            type="text"
+            class="task--item{{ ' checked' if item.completed }}"
+            name="description"
+            oninput="autoSubmit()"
+            data-original-value="{{ item.description }}"
+            value="{{ item.description }}"
+            required
+            maxlength="{{ max_length }}"
+            autocomplete="off">
     <button onclick="handleDelete('.list--item')"
             formaction="/{{ tasklist.id }}/{{ item.id }}/delete"
             formmethod="post"

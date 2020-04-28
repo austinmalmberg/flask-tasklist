@@ -5,12 +5,11 @@
     <ul class="task--list">
         {% for item in tasklist.items %}
         <li class="list--item">
-            <input type="checkbox" value="{{ item.completed }}" disabled
+            <input id="completed-{{ loop.index }}" type="checkbox" value="{{ item.completed }}" disabled
                    {{ "checked" if item.completed}}>
-            <label>
-                <input type="text" class="task--item{{ ' checked' if item.completed }}" value="{{ item.description }}"
-                       readonly>
-            </label>
+            <label for="completed-{{ loop.index }}"></label>
+            <input type="text" class="task--item{{ ' checked' if item.completed }}" value="{{ item.description }}"
+                   readonly>
         </li>
         {% endfor %}
     </ul>

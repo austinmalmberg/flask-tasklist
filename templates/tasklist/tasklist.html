@@ -7,11 +7,11 @@
         {# empty list item #}
         <li class="last list--item">
             <form method="post" action="{{ tasklist.id }}/additem" onsubmit="handleAddItem()">
-                <input id="tasklist-{{ tasklist.id }}-newitem" type="checkbox" oninput="updateInputClassList()" name="completed">
-                <label>
-                    <input type="text" class="task--item" name="description" placeholder="New Item"
-                           maxlength="{{ max_length }}" required>
-                </label>
+                <input id="newitem-tasklist-{{ tasklist.id }}" type="checkbox" oninput="updateInputClassList()"
+                       name="completed">
+                <label for="newitem-tasklist-{{ tasklist.id }}"></label>
+                <input type="text" class="task--item" name="description" placeholder="New Item"
+                       maxlength="{{ max_length }}" required>
                 <button class="btn-icon btn-add" title="Add Item"></button>
             </form>
         </li>
