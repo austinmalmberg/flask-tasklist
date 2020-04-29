@@ -1,74 +1,49 @@
 # Tasklists
 
-A web application manages items in a tasklist
+A single-page application for managing things to do in your daily life. Create one or multiple tasklists and check items off as you complete them!
+
 
 ## Endpoints
 
-### /
 
-***HTTP Methods***
+#### /
 
-**GET** | Displays a login form or, if a user is logged in, a list of user-defined items.
-
-### /register
-
-***HTTP Methods***
-
-**GET** | Provides a form so the user can create an account.
-
-**POST** | Sends form data to server.
-
-### /login
-
-***HTTP Methods***
-
-**GET** | Provides a form for the user to login to their account.
-
-**POST** | Sends form data to server.
+Displays the user's tasklists. If no user is logged in, redirects to **/login**
 
 
-### /additem
+### Authentication
 
-***HTTP Methods***
+#### /login
 
-**POST** | Adds an item to the tasklist from JSON data provided in the body
+Provides a form for the user to login to their account.
 
-    {
-        description: <string>
-    }
+#### /register
 
-> **201** | Created. Returns an item snippet with the new data. This includes an <input> element to update the item
-> description and a "button" <input> element to delete the item
-
-> **400** | Bad Request. The body does not contain the description
+Provides a form so the user can create an account.
 
 
-### /<item_id>/update
+### Tasklist
 
-***HTTP Methods***
+#### /create
 
-**POST** | Updates an item. Only one of the following arguments are required
+Creates a new tasklist for the user and returns a tasklist template.  This template is added before the last element (the Create New div) in the tasklist--container.
 
-    {
-        description: <string>
-    }
+### /<list_id>/update
 
-> **200** | OK. Returns an item snippet with the new data. This includes an <input> element to update the item
-> description and a "button" <input> element to delete the item.
->
-> **403** | Forbidden. Attempting to update an item that does not belong to the current user.
->
-> **404** | Not Found. The item item does not exist 
+Returns a template for the new header on status 200 (OK). **NOTE:** This is not utilized in the current version.  Right now, the client-side script updates sets the data-original-value attribute on <input>s to their current values on status 200 (OK).
 
+### /<list_id>/delete
 
-### /<item_id>/remove
+Removes the tasklist and all items in that list. On status 200 (OK), removes the tasklist--card representing the tasklist from the DOM.
 
-***HTTP Methods***
+#### /<list_id>/additem
 
-**POST** | Deletes an item.
+Adds an item to the tasklist. On status 200 (OK), returns an <form> element representing the item. 
 
-> **200** | OK
->
-> **403** | Forbidden. Attempting to delete an item that does not belong to the current user.
->
-> **404** | Not Found. The item does not exist 
+#### /<list_id>/<item_id>/update
+
+Updates an item and returns a <form> element representing the updated item. **NOTE:** This is not utilized in the current version. Right now, the client-side script sets the data-original-value attribute on <input>s to their current values on status 200 (OK).
+
+#### /<list_id>/<item_id>/remove
+
+Deletes an item. On status 200 (OK), removes the list--item <li> from the task--list <ul>.
