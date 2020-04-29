@@ -1,6 +1,14 @@
+# virtual environment
 venv/
 
+# python cache folder
 __pycache__/
+
+# PyCharm settings
 .idea/
 
+# database file
 *.sqlite
+
+# vim files I haven't figured out how to permanently ignore yet
+*.*~ 
