@@ -9,15 +9,15 @@
     <form method="post">
         <fieldset>
             <label for="email">Email</label>
-            <input type="text" name="email" id="email" required>
+            <input type="text" name="email" id="email" placeholder="someone@example.com" required>
         </fieldset>
         <fieldset>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
+            <label for="password">Password <span class="detail">(at least 6 characters)</span></label>
+            <input type="password" name="password" id="password" placeholder="******" required>
         </fieldset>
         <fieldset>
             <label for="confirm-password">Confirm Password</label>
-            <input type="password" name="confirm-password" id="confirm-password" required>
+            <input type="password" name="confirm-password" id="confirm-password" placeholder="******" required>
         </fieldset>
         <fieldset>
             <button>Register</button>

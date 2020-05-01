@@ -1,3 +1,4 @@
+import re
 import functools
 
 from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
@@ -20,6 +21,16 @@ login_tasklist = TaskList(name='Things to do', items=[
 ])
 
 
+def validate_email_syntax(email):
+    """
+    Checks if the email address syntax is valid.
+
+    :param email: the email address to test
+    :return: True if the email address is valid and false otherwise
+    """
+    return re.match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$', email) is not None
+
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
@@ -33,9 +44,13 @@ def register():
         if not email:
             error = 'Email is required'
         elif User.query.filter_by(email=email).first() is not None:
-            error = f"Email address is already registered"
+            error = 'Email address is already registered'
+        elif not validate_email_syntax(email):
+            error = 'Invalid email syntax'
         elif not password:
             error = 'Password is required'
+        elif len(password) < 6:
+            error = 'Password must be at least 6 characters'
         elif not confirm_password or password != confirm_password:
             error = 'Passwords do not match'
 
