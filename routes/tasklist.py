@@ -8,7 +8,7 @@ from routes.auth import login_required
 
 bp = Blueprint('tasklist', __name__)
 
-max_input_length = 26
+MAX_INPUT_LENGTH = 36
 
 
 def authorize_list_action(view):
@@ -52,7 +52,7 @@ def index():
     if g.user:
         tasklists = TaskList.query.filter_by(user_id=g.user.id).order_by(TaskList.id).all() or []
 
-    return render_template('index.html', max_length=max_input_length, tasklists=tasklists)
+    return render_template('index.html', max_length=MAX_INPUT_LENGTH, tasklists=tasklists)
 
 
 @bp.route('/create', methods=('POST',))
@@ -75,7 +75,7 @@ def update(list_id, tasklist):
     new_name = request.form.get(f'task--name')
 
     if new_name and len(new_name.strip()) > 0:
-        tasklist.name = new_name[:max_input_length]
+        tasklist.name = new_name[:MAX_INPUT_LENGTH]
 
         db.session.commit()
 
@@ -113,7 +113,7 @@ def add_item(list_id, tasklist):
 
         item = Item(
             list_id=tasklist.id,
-            description=description[:max_input_length],
+            description=description[:MAX_INPUT_LENGTH],
             completed=completed
         )
 
@@ -141,7 +141,7 @@ def update_item(list_id, item_id, tasklist):
     description = request.form.get('description')
 
     if description:
-        item.description = description[:max_input_length]
+        item.description = description[:MAX_INPUT_LENGTH]
 
         completed = True if request.form.get('completed') else False
 
