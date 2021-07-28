@@ -4,17 +4,17 @@ import functools
 from flask import Blueprint, request, redirect, url_for, flash, render_template, session, g
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from database import db, User, TaskList, Item
+from database import db, User, Tasklist, Item
 
 bp = Blueprint('auth', __name__)
 
-register_tasklist = TaskList(name='Things to do', items=[
+register_tasklist = Tasklist(name='Things to do', items=[
     Item(description='Register', completed=False),
     Item(description='Login', completed=False),
     Item(description='Organize your workflow', completed=False)
 ])
 
-login_tasklist = TaskList(name='Things to do', items=[
+login_tasklist = Tasklist(name='Things to do', items=[
     Item(description='Register', completed=True),
     Item(description='Login', completed=False),
     Item(description='Organize your workflow', completed=False)
@@ -29,6 +29,24 @@ def validate_email_syntax(email):
     :return: True if the email address is valid and false otherwise
     """
     return re.match('^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$', email) is not None
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id', None)
+
+    g.user = User.query.get(user_id) if user_id else None
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -94,28 +112,7 @@ def login():
     return render_template('auth/login.html', tasklist=login_tasklist)
 
 
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = User.query.filter_by(id=user_id).first()
-
-
 @bp.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view

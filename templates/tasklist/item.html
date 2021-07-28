@@ -11,17 +11,17 @@
     <label for="completed-{{ item.id }}"></label>
     <input
             type="text"
-            class="task--item{{ ' checked' if item.completed }}"
+            class="task__item{{ ' checked' if item.completed }}"
             name="description"
             oninput="autoSubmit()"
-            data-original-value="{{ item.description }}"
-            value="{{ item.description }}"
+            data-original-value="{{ item.description|e }}"
+            value="{{ item.description|e }}"
             required
             maxlength="{{ max_length }}"
             autocomplete="off">
-    <button onclick="handleDelete('.list--item')"
+    <button onclick="handleDelete('.list__item')"
             formaction="/{{ tasklist.id }}/{{ item.id }}/delete"
             formmethod="post"
             class="btn-icon btn-delete"
-            title="Delete {{ item.description }}"></button>
+            title="Delete {{ item.description|e }}"></button>
 </form>

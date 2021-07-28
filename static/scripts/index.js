@@ -50,7 +50,7 @@ function autoSubmit(tts=DEFAULT_SUBMIT_TIMEOUT) {
 
     function inputChanged(form) {
 
-        for (let input of form.getElementsByTagName('input')) {
+        for (const input of form.getElementsByTagName('input')) {
 
             // get the original content
             const origValue = input.getAttribute(ORIGINAL_VALUE_ATTRIBUTE);
@@ -169,7 +169,7 @@ async function handleAddItem() {
     if (response.status === 200) {
         // create a new list element
         const newLi = document.createElement('li');
-        newLi.classList.add('list--item');
+        newLi.classList.add('list__item');
 
         // append the html data received from the fetch
         for (let node of stringToHtmlElements(data)) {
@@ -178,7 +178,7 @@ async function handleAddItem() {
 
         // add it before add item list element
         const ul = form.closest('ul');
-        ul.insertBefore(newLi, ul.querySelector('.last.list--item'));
+        ul.insertBefore(newLi, ul.querySelector('.last.list__item'));
 
         flashSuccess(form, 'Up to date');
     }
@@ -250,7 +250,7 @@ function flashError(target, text) {
 
 
 function closestFlashElement(target, callback) {
-    const card = target.closest('.tasklist--card');
+    const card = target.closest('.tasklist__card');
     if (card) {
         const flash = card.querySelector('.flash');
         if (flash)

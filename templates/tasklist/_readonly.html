@@ -1,14 +1,14 @@
-<div class="wrapper tasklist--card">
-    <div class="tasklist--header">
-        <input class="tasklist--name" type="text" value="{{ tasklist.name }}" readonly>
+<div class="wrapper tasklist__card">
+    <div class="tasklist__header">
+        <input class="tasklist__name" type="text" value="{{ tasklist.name|e }}" readonly>
     </div>
-    <ul class="task--list">
+    <ul class="task__list">
         {% for item in tasklist.items %}
-        <li class="list--item">
+        <li class="list__item">
             <input id="completed-{{ loop.index }}" type="checkbox" value="{{ item.completed }}" disabled
                    {{ "checked" if item.completed}}>
             <label for="completed-{{ loop.index }}"></label>
-            <input type="text" class="task--item{{ ' checked' if item.completed }}" value="{{ item.description }}"
+            <input type="text" class="task__item{{ ' checked' if item.completed }}" value="{{ item.description }}"
                    readonly>
         </li>
         {% endfor %}

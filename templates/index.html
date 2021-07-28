@@ -5,12 +5,12 @@
 {% block content %}
 
 {% if g.user %}
-<div class="tasklist--container">
+<div class="tasklist__container">
     {% for tasklist in tasklists %}
-    {% include 'tasklist/tasklist.html' %}
+        {% include 'tasklist/tasklist.html' with context %}
     {% endfor %}
 
-    <div id="last-card" class="wrapper last tasklist--card">
+    <div id="last-card" class="wrapper last tasklist__card">
         <button id="create-list" class="big btn-icon btn-add" onclick="handleCreateList()" formaction="/create"
                 formmethod="post" title="Create List"></button>
     </div>

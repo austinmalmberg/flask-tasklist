@@ -1,16 +1,16 @@
-<div class="wrapper tasklist--card">
-    {% include 'tasklist/tasklist_header.html' %}
-    <ul class="task--list">
+<div class="wrapper tasklist__card">
+    {% include 'tasklist/_header.html' with context %}
+    <ul class="task__list">
         {% for item in tasklist.items %}
-        <li class="list--item">{% include 'tasklist/item.html' %}</li>
+        <li class="list__item">{% include 'tasklist/item.html' %}</li>
         {% endfor %}
         {# empty list item #}
-        <li class="last list--item">
+        <li class="last list__item">
             <form method="post" action="{{ tasklist.id }}/additem" onsubmit="handleAddItem()">
                 <input id="newitem-tasklist-{{ tasklist.id }}" type="checkbox" oninput="updateInputClassList()"
                        name="completed">
                 <label for="newitem-tasklist-{{ tasklist.id }}"></label>
-                <input type="text" class="task--item" name="description" placeholder="New Item"
+                <input type="text" class="task__item" name="description" placeholder="New Item"
                        maxlength="{{ max_length }}" required>
                 <button class="btn-icon btn-add" title="Add Item"></button>
             </form>

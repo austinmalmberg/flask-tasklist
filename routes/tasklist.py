@@ -3,7 +3,7 @@ import functools
 from flask import Blueprint, render_template, g, request, Response
 from werkzeug.exceptions import abort
 
-from database import db, TaskList, Item
+from database import db, Tasklist, Item
 from routes.auth import login_required
 
 bp = Blueprint('tasklist', __name__)
@@ -11,7 +11,7 @@ bp = Blueprint('tasklist', __name__)
 MAX_INPUT_LENGTH = 36
 
 
-def authorize_list_action(view):
+def authorize_tasklist_action(view):
     """
     A view decorator that
         1) verifies the tasklist exists, and
@@ -32,14 +32,19 @@ def authorize_list_action(view):
 
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        tasklist = TaskList.query.filter_by(id=kwargs['list_id']).first()
+        id = kwargs.get('tasklist_id', None)
 
-        if tasklist is None:
-            abort(404)
-        elif g.user.id != tasklist.user_id:
-            abort(403)
+        if id is None:
+            return abort(400)
 
-        return view(**kwargs, tasklist=tasklist)
+        g.tasklist = Tasklist.query.get(id)
+
+        if g.tasklist is None:
+            return abort(404)
+        elif g.user.id != g.tasklist.user_id:
+            return abort(403)
+
+        return view(**kwargs)
 
     return wrapped_view
 
@@ -50,7 +55,7 @@ def index():
     tasklists = []
 
     if g.user:
-        tasklists = TaskList.query.filter_by(user_id=g.user.id).order_by(TaskList.id).all() or []
+        tasklists = Tasklist.query.filter_by(user_id=g.user.id).order_by(Tasklist.id).all() or []
 
     return render_template('index.html', max_length=MAX_INPUT_LENGTH, tasklists=tasklists)
 
@@ -58,7 +63,7 @@ def index():
 @bp.route('/create', methods=('POST',))
 @login_required
 def create():
-    tasklist = TaskList(
+    tasklist = Tasklist(
         user_id=g.user.id
     )
 
@@ -68,18 +73,18 @@ def create():
     return render_template('tasklist/tasklist.html', tasklist=tasklist)
 
 
-@bp.route('/<int:list_id>/update', methods=('POST',))
+@bp.route('/<int:tasklist_id>/update', methods=('POST',))
 @login_required
-@authorize_list_action
-def update(list_id, tasklist):
-    new_name = request.form.get(f'task--name')
+@authorize_tasklist_action
+def update(tasklist_id):
+    new_name = request.form.get(f'task__name')
 
     if new_name and len(new_name.strip()) > 0:
-        tasklist.name = new_name[:MAX_INPUT_LENGTH]
+        g.tasklist.name = new_name[:MAX_INPUT_LENGTH]
 
         db.session.commit()
 
-        return render_template('tasklist/tasklist_header.html', tasklist=tasklist)
+        return render_template('tasklist/_header.html', tasklist=g.tasklist)
 
     return Response(
         response='A list title is required',
@@ -87,32 +92,32 @@ def update(list_id, tasklist):
     )
 
 
-@bp.route('/<int:list_id>/delete', methods=('POST',))
+@bp.route('/<int:tasklist_id>/delete', methods=('POST',))
 @login_required
-@authorize_list_action
-def delete(list_id, tasklist):
-    list_items = Item.query.filter_by(list_id=list_id).all()
+@authorize_tasklist_action
+def delete(tasklist_id):
+    list_items = Item.query.filter_by(tasklist_id=tasklist_id).all()
 
     for item in list_items:
         db.session.delete(item)
 
-    db.session.delete(tasklist)
+    db.session.delete(g.tasklist)
     db.session.commit()
 
     return Response(status=200)
 
 
-@bp.route('/<int:list_id>/additem', methods=('POST',))
+@bp.route('/<int:tasklist_id>/additem', methods=('POST',))
 @login_required
-@authorize_list_action
-def add_item(list_id, tasklist):
+@authorize_tasklist_action
+def add_item(tasklist_id):
     description = request.form.get('description')
 
     if description:
         completed = True if request.form.get('completed') else False
 
         item = Item(
-            list_id=tasklist.id,
+            tasklist_id=g.tasklist.id,
             description=description[:MAX_INPUT_LENGTH],
             completed=completed
         )
@@ -120,7 +125,7 @@ def add_item(list_id, tasklist):
         db.session.add(item)
         db.session.commit()
 
-        return render_template('tasklist/item.html', tasklist=tasklist, item=item)
+        return render_template('tasklist/item.html', tasklist=g.tasklist, item=item)
 
     return Response(
         response='A description is required',
@@ -128,15 +133,15 @@ def add_item(list_id, tasklist):
     )
 
 
-@bp.route('/<int:list_id>/<int:item_id>/update', methods=('POST',))
+@bp.route('/<int:tasklist_id>/<int:item_id>/update', methods=('POST',))
 @login_required
-@authorize_list_action
-def update_item(list_id, item_id, tasklist):
+@authorize_tasklist_action
+def update_item(tasklist_id, item_id):
     item = Item.query.filter_by(id=item_id).first()
 
     # make sure the item exists
     if item is None:
-        abort(404)
+        return abort(404)
 
     description = request.form.get('description')
 
@@ -151,7 +156,7 @@ def update_item(list_id, item_id, tasklist):
 
         db.session.commit()
 
-        return render_template('tasklist/item.html', tasklist=tasklist, item=item)
+        return render_template('tasklist/item.html', tasklist=g.tasklist, item=item)
 
     return Response(
         response='A description is required',
@@ -159,14 +164,14 @@ def update_item(list_id, item_id, tasklist):
     )
 
 
-@bp.route('/<int:list_id>/<int:item_id>/delete', methods=('POST',))
+@bp.route('/<int:tasklist_id>/<int:item_id>/delete', methods=('POST',))
 @login_required
-@authorize_list_action
-def remove(list_id, item_id, tasklist):
+@authorize_tasklist_action
+def remove(tasklist_id, item_id):
     item = Item.query.filter_by(id=item_id).first()
 
     if not item:
-        abort(404)
+        return abort(404)
 
     db.session.delete(item)
     db.session.commit()

@@ -1,0 +1,15 @@
+<form id="list-{{ tasklist.id }}" class="tasklist__header flex-space-between" method="post" action="/{{ tasklist.id }}/update"
+      onsubmit="return false" onkeydown="return event.key != 'Enter';">
+    <input
+            type="text"
+            name="task__name"
+            class="tasklist__name"
+            oninput="autoSubmit()"
+            data-original-value="{{ tasklist.name|e }}"
+            value="{{ tasklist.name|e }}"
+            maxlength="{{ max_length }}"
+            autocomplete="off"
+            required>
+    <button class="btn-icon btn-delete" onclick="handleDelete('.tasklist__card')" formaction="/{{ tasklist.id }}/delete"
+            formmethod="post" title="Delete {{ tasklist.name|e }}"></button>
+</form>

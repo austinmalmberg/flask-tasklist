@@ -232,13 +232,13 @@ nav a {
     text-decoration: none;
 }
 
-.nav--list {
+.nav__list {
     list-style-type: none;
 
     display: flex;
 }
 
-.nav--item {
+.nav__item {
     margin-left: 0.5em;
 }
 
@@ -247,19 +247,19 @@ nav a {
 /* 3.1 index.html */
 /* 3.1.0 Tasklist */
 
-.tasklist--container {
+.tasklist__container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
 }
 
-.last.tasklist--card {
+.last.tasklist__card {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.tasklist--name,
-.task--item {
+.tasklist__name,
+.task__item {
     border: none;
     background-color: inherit;
     margin-right: 0.5em;
@@ -275,32 +275,32 @@ nav a {
 
 /* 3.1.1 Tasklist Header */
 
-.tasklist--header {
+.tasklist__header {
     font-size: 1.2em;
 }
 
-.tasklist--card input:hover,
-.tasklist--card input:focus {
+.tasklist__card input:hover,
+.tasklist__card input:focus {
     background-color: white;
 }
 
-.tasklist--name {
+.tasklist__name {
     font-weight: bold;
 }
 
 /* 3.1.2 Tasklist Items */
 
-.task--list {
+.task__list {
     list-style-type: none;
     padding-left: 0;
 }
 
-.list--item {
+.list__item {
     margin: 0.4em 0;
-    padding-left: 0.3em;    /* accounts for the tasklist--name padding to align the item checkbox with the name */
+    padding-left: 0.3em;    /* accounts for the tasklist__name padding to align the item checkbox with the name */
 }
 
-.task--item {
+.task__item {
     width: 70%;
 }
 
@@ -311,12 +311,12 @@ button.big {
     height: 6em;
 }
 
-.tasklist--header button {
+.tasklist__header button {
     font-size: 0.75em;
 }
 
-.list--item .btn-add,
-.list--item .btn-delete {
+.list__item .btn-add,
+.list__item .btn-delete {
     padding: 0.6em;
     transform: translateY(-0.3em);
 }

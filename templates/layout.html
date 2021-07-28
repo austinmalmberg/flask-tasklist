@@ -12,14 +12,14 @@
 <nav>
     <a href="/">
         <p class="brand title">Tasklists</p>
-        <p class="brand slogan">Keep your shit together!</p>
+        <p class="brand slogan">Stay organized</p>
     </a>
-    <ul class="nav--list">
+    <ul class="nav__list">
         {% if g.user %}
-        <li><a class="nav--item btn" href="{{ url_for('auth.logout') }}">Logout</a>
+        <li><a class="nav__item btn" href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
-        <li><a class="nav--item btn" href="{{ url_for('auth.register') }}">Register</a>
-        <li><a class="nav--item btn" href="{{ url_for('auth.login') }}">Login</a>
+        <li><a class="nav__item btn" href="{{ url_for('auth.register') }}">Register</a>
+        <li><a class="nav__item btn" href="{{ url_for('auth.login') }}">Login</a>
             {% endif %}
     </ul>
 </nav>

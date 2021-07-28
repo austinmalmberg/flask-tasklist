@@ -1,5 +1,6 @@
 # virtual environment
 venv/
+*.env
 
 # python cache folder
 __pycache__/
@@ -9,6 +10,7 @@ __pycache__/
 
 # database file
 *.sqlite
+*.db
 
 # vim files I haven't figured out how to permanently ignore yet
 *.*~ 
